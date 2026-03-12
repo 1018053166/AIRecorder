@@ -85,10 +85,75 @@ AIRecorder/
 
 1. 打开 popup 查看 SOP 列表
 2. 点击"查看"按钮查看详细步骤
-3. 支持三种导出格式：
-   - **Playwright 脚本** - TypeScript 测试代码
+3. 支持四种导出格式：
+   - **Playwright 脚本** - TypeScript 测试代码，可直接运行
    - **JSON 格式** - 结构化数据供 AI 使用
+   - **Skill 格式** - Trae 可复用技能文件
    - **Markdown 摘要** - 人类可读文档
+
+## 导出格式说明
+
+### 1. Playwright 脚本 (`.spec.ts`)
+
+生成可直接运行的 Playwright 自动化测试脚本：
+
+```bash
+# 安装 Playwright
+npm init playwright@latest
+
+# 运行测试
+npx playwright test your-sop.spec.ts
+```
+
+### 2. JSON 格式 (`.json`)
+
+结构化数据，适合 AI 系统解析和执行：
+
+```json
+{
+  "name": "用户登录流程",
+  "steps": [
+    { "step": "navigation", "url": "https://example.com/login" },
+    { "step": "input", "selector": "#username", "value": "testuser" }
+  ]
+}
+```
+
+### 3. Skill 格式 (`.md`)
+
+生成 Trae 可复用的技能文件，包含完整的操作流程描述：
+
+```markdown
+---
+name: "login-action"
+description: "Executes 登录流程. Invoke when user wants to perform this recorded workflow."
+---
+
+# 登录流程
+
+## Purpose
+Automates the workflow: 登录流程
+
+## Parameters
+- `url`: Target URL (default: https://example.com/login)
+- `#username`: Input value (default: testuser)
+
+## Steps
+1. **NAVIGATE**: 导航到登录页面
+2. **INPUT**: 输入用户名
+3. **CLICK**: 点击登录按钮
+
+## Example Usage
+"Please execute the 登录流程 workflow"
+```
+
+**使用 Skill 文件：**
+1. 将导出的 `.md` 文件放入项目的 `.trae/skills/` 目录
+2. Trae 会自动识别并可复用该技能
+
+### 4. Markdown 摘要 (`.md`)
+
+人类可读的操作文档，适合作为 SOP 文档分享。
 
 ## 生成的 Playwright 脚本示例
 
